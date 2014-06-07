@@ -120,7 +120,7 @@
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
     [self sendNSURLRequest:[
-                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/",
+                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f",
                             _venderUUID.UUIDString,
                             @"enter",
                             location.coordinate.latitude,
@@ -140,7 +140,7 @@
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
     [self sendNSURLRequest:[
-                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/",
+                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f",
                             _venderUUID.UUIDString,
                             @"exit",
                             location.coordinate.latitude,
@@ -163,7 +163,7 @@
         if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
             status = @"background";
         } else {
-            status = @"not background";
+            status = @"notbackground";
         }
 
         [self sendNSURLRequest:[
@@ -204,7 +204,7 @@
 - (void)sendNSURLRequest:(NSString *)url
 {
     NSLog(@"%@",url);
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/appstate/%ld",url,[UIApplication sharedApplication].applicationState]]];
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
 
         if (error) {
