@@ -19,6 +19,7 @@
 
 @implementation ViewController
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,6 +47,8 @@
 - (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
 {
     [self sendLocalNotificationForMessage:@"Start Monitoring Region"];
+    
+    NSLog(@"Start Monitoring Region");
     [self.locationManager requestStateForRegion:self.beaconRegion];
 }
 
@@ -53,12 +56,14 @@
 {
     switch (state) {
         case CLRegionStateInside: // リージョン内にいる
-            if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
-                [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
-            }
+            [self sendLocalNotificationForMessage:@"I'm standing by you!!"];
+            NSLog(@"I'm standing by you!!");
             break;
         case CLRegionStateOutside:
         case CLRegionStateUnknown:
+            [self sendLocalNotificationForMessage:@"Where you are??"];
+            NSLog(@"Where you are??");
+            break;
         default:
             break;
     }
@@ -68,54 +73,23 @@
 {
     [self sendLocalNotificationForMessage:@"Enter Region"];
     
-    if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
-        [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
-    }
+    NSLog(@"Enter Region");
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
     [self sendLocalNotificationForMessage:@"Exit Region"];
-    
-    if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
-        [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
-    }
-}
-
-- (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
-{
-    if (beacons.count > 0) {
-        CLBeacon *nearestBeacon = beacons.firstObject;
-        
-        NSString *rangeMessage;
-        
-        switch (nearestBeacon.proximity) {
-            case CLProximityImmediate:
-                rangeMessage = @"Range Immediate: ";
-                break;
-            case CLProximityNear:
-                rangeMessage = @"Range Near: ";
-                break;
-            case CLProximityFar:
-                rangeMessage = @"Range Far: ";
-                break;
-            default:
-                rangeMessage = @"Range Unknown: ";
-                break;
-        }
-        
-        NSString *message = [NSString stringWithFormat:@"major:%@, minor:%@, accuracy:%f, rssi:%d",
-                             nearestBeacon.major, nearestBeacon.minor, nearestBeacon.accuracy, nearestBeacon.rssi];
-        [self sendLocalNotificationForMessage:[rangeMessage stringByAppendingString:message]];
-    }
+    NSLog(@"Exit Region");
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
 {
-    [self sendLocalNotificationForMessage:@"Exit Region"];
+    [self sendLocalNotificationForMessage:@"RegioningFailed"];
+    NSLog(@"RegionFailed");
 }
 
 #pragma mark - Private methods
+
 
 - (void)sendLocalNotificationForMessage:(NSString *)message
 {
@@ -125,5 +99,4 @@
     localNotification.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
-
 @end

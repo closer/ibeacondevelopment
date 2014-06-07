@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>5765D453-326D-4E2C-9E08-0B231EA5D52B</string>
+	<string>B9233204-9199-4B78-91FC-B7164E86202B</string>
 	<key>IDESourceControlProjectName</key>
 	<string>iBeaconSampleCentral</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>B06C5686-AA99-4CD4-B1C5-896F358B8A6C</key>
-		<string>https://github.com/kakegawa-atsushi/iBeaconSample.git</string>
+		<key>37DF3497-5EE7-4296-96D8-DC844614724D</key>
+		<string>https://github.com/closer/ibeacondevelopment.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>iBeaconSampleCentral/iBeaconSampleCentral.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>B06C5686-AA99-4CD4-B1C5-896F358B8A6C</key>
+		<key>37DF3497-5EE7-4296-96D8-DC844614724D</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/kakegawa-atsushi/iBeaconSample.git</string>
+	<string>https://github.com/closer/ibeacondevelopment.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>B06C5686-AA99-4CD4-B1C5-896F358B8A6C</string>
+	<string>37DF3497-5EE7-4296-96D8-DC844614724D</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>B06C5686-AA99-4CD4-B1C5-896F358B8A6C</string>
+			<string>37DF3497-5EE7-4296-96D8-DC844614724D</string>
 			<key>IDESourceControlWCCName</key>
-			<string>iBeaconSample</string>
+			<string>ibeacondevelopment</string>
 		</dict>
 	</array>
 </dict>
