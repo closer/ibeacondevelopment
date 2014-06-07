@@ -48,24 +48,32 @@
 
 - (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
 {
+    
+    CLLocation *location = [manager location];
+    NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
+    
     [self sendLocalNotificationForMessage:@"Start Monitoring Region"];
     NSLog(@"Start Monitoring Region");
-    [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/startMonitroing/",_venderUUID.UUIDString]];
+    [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/startMonitroing/long/%f/lat/%f/",_venderUUID.UUIDString,location.coordinate.latitude,location.coordinate.longitude]];
     [self.locationManager requestStateForRegion:self.beaconRegion];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
 {
+    
+    CLLocation *location = [manager location];
+    NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
+    
     switch (state) {
         case CLRegionStateInside: // リージョン内にいる
             [self sendLocalNotificationForMessage:@"I'm standing by you!!"];
             NSLog(@"I'm standing by you!!");
-            [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/inside/",_venderUUID.UUIDString]];
+            [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/inside/long/%f/lat/%f/",_venderUUID.UUIDString,location.coordinate.latitude,location.coordinate.longitude]];
             break;
         case CLRegionStateOutside:
             [self sendLocalNotificationForMessage:@"Where you are??"];
             NSLog(@"Where you are??");
-            [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/ousside/",_venderUUID.UUIDString]];
+            [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/ousside/long/%f/lat/%f/",_venderUUID.UUIDString,location.coordinate.latitude,location.coordinate.longitude]];
 
             break;
         case CLRegionStateUnknown:
@@ -82,7 +90,7 @@
     CLLocation *location = [manager location];
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
-    [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/enter/",_venderUUID.UUIDString]];
+    [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/enter/long/%f/lat/%f/",_venderUUID.UUIDString,location.coordinate.latitude,location.coordinate.longitude]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
@@ -93,7 +101,7 @@
     CLLocation *location = [manager location];
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
-    [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/exit/",_venderUUID.UUIDString]];
+    [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/exit/long/%f/lat/%f/",_venderUUID.UUIDString,location.coordinate.latitude,location.coordinate.longitude]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
@@ -104,7 +112,7 @@
     CLLocation *location = [manager location];
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
-    [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/regionFailed/",_venderUUID.UUIDString]];
+    [self sendNSURLRequest:[NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/regionFailed/long/%f/lat/%f/",_venderUUID.UUIDString,location.coordinate.latitude,location.coordinate.longitude]];
 }
 
 #pragma mark - Private methods
