@@ -73,6 +73,10 @@
 {
     [self sendLocalNotificationForMessage:@"Enter Region"];
     
+    CLLocation *location = [manager location];
+    
+    NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
+    
     NSLog(@"Enter Region");
 }
 
