@@ -106,7 +106,7 @@
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLBeaconRegion *)region
 {
     [self sendLocalNotificationForMessage:@"Enter Region"];
     NSLog(@"Enter Region");
@@ -115,17 +115,19 @@
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
     [self sendNSURLRequest:[
-                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f",
+                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/major/%@/minor/%@",
                             _venderUUID.UUIDString,
                             @"enter",
                             location.coordinate.latitude,
                             location.coordinate.longitude,
                             location.horizontalAccuracy,
-                            location.verticalAccuracy]];
+                            location.verticalAccuracy,
+                            region.major,
+                            region.minor]];
 
 }
 
-- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLBeaconRegion *)region
 {
     [self sendLocalNotificationForMessage:@"Exit Region"];
     NSLog(@"Exit Region");
@@ -134,13 +136,15 @@
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
     [self sendNSURLRequest:[
-                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f",
+                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/major/%@/minor/%@",
                             _venderUUID.UUIDString,
                             @"exit",
                             location.coordinate.latitude,
                             location.coordinate.longitude,
                             location.horizontalAccuracy,
-                            location.verticalAccuracy]];
+                            location.verticalAccuracy,
+                            region.major,
+                            region.minor]];
 
 }
 
