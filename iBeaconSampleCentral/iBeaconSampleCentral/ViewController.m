@@ -27,10 +27,10 @@
         self.locationManager = [CLLocationManager new];
         self.locationManager.delegate = self;
         
-        self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"D456894A-02F0-4CB0-8258-81C187DF45C2"];
+        self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6A"];
         
         self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:self.proximityUUID
-                                                               identifier:@"jp.classmethod.testregion"];
+                                                               identifier:@"com.otoshimono.testregion"];
         [self.locationManager startMonitoringForRegion:self.beaconRegion];
     }
 }
@@ -46,6 +46,22 @@
 - (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
 {
     [self sendLocalNotificationForMessage:@"Start Monitoring Region"];
+    [self.locationManager requestStateForRegion:self.beaconRegion];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
+{
+    switch (state) {
+        case CLRegionStateInside: // リージョン内にいる
+            if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
+                [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
+            }
+            break;
+        case CLRegionStateOutside:
+        case CLRegionStateUnknown:
+        default:
+            break;
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
