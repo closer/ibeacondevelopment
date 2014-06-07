@@ -106,7 +106,7 @@
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLBeaconRegion *)region
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
     [self sendLocalNotificationForMessage:@"Enter Region"];
     NSLog(@"Enter Region");
@@ -122,12 +122,12 @@
                             location.coordinate.longitude,
                             location.horizontalAccuracy,
                             location.verticalAccuracy,
-                            region.major,
-                            region.minor]];
+                            self.beaconRegion.major,
+                            self.beaconRegion.minor]];
 
 }
 
-- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLBeaconRegion *)region
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
     [self sendLocalNotificationForMessage:@"Exit Region"];
     NSLog(@"Exit Region");
@@ -143,8 +143,8 @@
                             location.coordinate.longitude,
                             location.horizontalAccuracy,
                             location.verticalAccuracy,
-                            region.major,
-                            region.minor]];
+                            self.beaconRegion.major,
+                            self.beaconRegion.minor]];
 
 }
 
