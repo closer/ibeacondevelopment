@@ -112,7 +112,7 @@
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLBeaconRegion *)region
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
     NSLog(@"Enter Region");
     
@@ -131,7 +131,7 @@
     
 }
 
-- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLBeaconRegion *)region
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
     [self sendLocalNotificationForMessage:@"Exit Region"];
     NSLog(@"Exit Region");
