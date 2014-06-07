@@ -167,15 +167,16 @@
         }
 
         [self sendNSURLRequest:[
-                                NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/major/%@/minor/%@",
+                                NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/major/%@/minor/%@/appstate/%@",
                                 _venderUUID.UUIDString,
-                                status,
+                                @"findBeacon",
                                 location.coordinate.latitude,
                                 location.coordinate.longitude,
                                 location.horizontalAccuracy,
                                 location.verticalAccuracy,
                                 nearestBeacon.major,
-                                nearestBeacon.minor]];
+                                nearestBeacon.minor,
+                                status]];
         
     }
 }
