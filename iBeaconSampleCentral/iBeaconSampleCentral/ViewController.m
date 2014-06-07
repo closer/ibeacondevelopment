@@ -32,7 +32,13 @@
         
         self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:self.proximityUUID
                                                                identifier:@"com.otoshimono.testregion"];
+//        self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:self.proximityUUID major:0 minor:0 identifier:@"com.otoshimono.testregion"];
+        self.beaconRegion.notifyOnEntry = YES;
+        self.beaconRegion.notifyOnExit = YES;
+        self.beaconRegion.notifyEntryStateOnDisplay = YES;
+        
         [self.locationManager startMonitoringForRegion:self.beaconRegion];
+        [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
     }
     _venderUUID = [UIDevice currentDevice].identifierForVendor;
 
@@ -123,9 +129,6 @@
                             location.verticalAccuracy
                             ]];
     
-    if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
-        [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
-    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLBeaconRegion *)region
@@ -146,9 +149,6 @@
                             location.verticalAccuracy
                             ]];
     
-    if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
-        [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
-    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
