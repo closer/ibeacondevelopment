@@ -157,17 +157,26 @@
         CLBeacon *nearestBeacon = beacons.firstObject;
         
         CLLocation *location = [manager location];
+        
+        NSString *status = NULL;
+        
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+            status = @"background";
+        } else {
+            status = @"not background";
+        }
 
         [self sendNSURLRequest:[
                                 NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/major/%@/minor/%@",
                                 _venderUUID.UUIDString,
-                                @"exit",
+                                status,
                                 location.coordinate.latitude,
                                 location.coordinate.longitude,
                                 location.horizontalAccuracy,
                                 location.verticalAccuracy,
                                 nearestBeacon.major,
                                 nearestBeacon.minor]];
+        
     }
 }
 
