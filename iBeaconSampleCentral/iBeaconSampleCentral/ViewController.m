@@ -108,23 +108,24 @@
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLBeaconRegion *)region
 {
-    [self sendLocalNotificationForMessage:@"Enter Region"];
     NSLog(@"Enter Region");
     
     CLLocation *location = [manager location];
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
     [self sendNSURLRequest:[
-                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/major/%@/minor/%@",
+                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/",
                             _venderUUID.UUIDString,
                             @"enter",
                             location.coordinate.latitude,
                             location.coordinate.longitude,
                             location.horizontalAccuracy,
-                            location.verticalAccuracy,
-                            region.major,
-                            region.minor]];
-
+                            location.verticalAccuracy
+                            ]];
+    
+    if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
+        [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLBeaconRegion *)region
@@ -136,16 +137,38 @@
     NSLog(@"%f, %f", location.coordinate.latitude, location.coordinate.longitude);
     
     [self sendNSURLRequest:[
-                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/major/%@/minor/%@",
+                            NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/",
                             _venderUUID.UUIDString,
                             @"exit",
                             location.coordinate.latitude,
                             location.coordinate.longitude,
                             location.horizontalAccuracy,
-                            location.verticalAccuracy,
-                            region.major,
-                            region.minor]];
+                            location.verticalAccuracy
+                            ]];
+    
+    if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
+        [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
+    }
+}
 
+- (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region
+{
+    if (beacons.count > 0) {
+        CLBeacon *nearestBeacon = beacons.firstObject;
+        
+        CLLocation *location = [manager location];
+
+        [self sendNSURLRequest:[
+                                NSString stringWithFormat:@"http://lab.exer.jp/tag/regist/userid/%@/state/%@/long/%f/lat/%f/horizontalAccuracy/%f/verticalAccuracy/%f/major/%@/minor/%@",
+                                _venderUUID.UUIDString,
+                                @"exit",
+                                location.coordinate.latitude,
+                                location.coordinate.longitude,
+                                location.horizontalAccuracy,
+                                location.verticalAccuracy,
+                                nearestBeacon.major,
+                                nearestBeacon.minor]];
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
@@ -171,6 +194,7 @@
 
 - (void)sendNSURLRequest:(NSString *)url
 {
+    NSLog(@"%@",url);
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
 
